@@ -155,4 +155,68 @@ class Visualizador:
         fig.delaxes(axes[-1])
         plt.tight_layout()
     
+    def deteccion_outliers(self, color = "grey"):
+
+        """
+        Detecta y visualiza valores atípicos en un DataFrame.
+
+        Params:
+            - dataframe (pandas.DataFrame):  El DataFrame que se va a usar
+
+        Returns:
+            No devuelve nada
+
+        Esta función selecciona las columnas numéricas del DataFrame dado y crea un diagrama de caja para cada una de ellas para visualizar los valores atípicos.
+        """
+
+        lista_num = self.separar_dataframes()[0].columns
+
+        fig, axes = plt.subplots(2, ncols = math.ceil(len(lista_num)/2), figsize=(15,5))
+        axes = axes.flat
+
+        for indice, columna in enumerate(lista_num):
+            sns.boxplot(x=columna, data=self.dataframe, 
+                        ax=axes[indice], 
+                        color=color, 
+                        flierprops={'markersize': 4, 'markerfacecolor': 'orange'})
+
+        if len(lista_num) % 2 != 0:
+            fig.delaxes(axes[-1])
+
+        
+        plt.tight_layout()
+
+    def correlacion(self, tamano_grafica = (7, 5)):
+
+        """
+        Visualiza la matriz de correlación de un DataFrame utilizando un mapa de calor.
+
+        Params:
+            - dataframe : pandas DataFrame. El DataFrame que contiene los datos para calcular la correlación.
+
+        Returns:
+        No devuelve nada
+
+        Muestra un mapa de calor de la matriz de correlación.
+
+        - Utiliza la función `heatmap` de Seaborn para visualizar la matriz de correlación.
+        - La matriz de correlación se calcula solo para las variables numéricas del DataFrame.
+        - La mitad inferior del mapa de calor está oculta para una mejor visualización.
+        - Permite guardar la imagen del mapa de calor como un archivo .png si se solicita.
+
+        """
+
+        plt.figure(figsize = tamano_grafica )
+
+        mask = np.triu(np.ones_like(self.dataframe.corr(numeric_only=True), dtype = np.bool_))
+
+        sns.heatmap(data = self.dataframe.corr(numeric_only = True), 
+                    annot = True, 
+                    vmin=-1,
+                    vmax=1,
+                    cmap="viridis",
+                    linecolor="black", 
+                    fmt='.1g', 
+                    mask = mask)
     
+
