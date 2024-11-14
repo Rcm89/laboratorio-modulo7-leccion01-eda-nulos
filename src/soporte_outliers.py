@@ -31,9 +31,9 @@ from itertools import product, combinations
 import warnings
 warnings.filterwarnings('ignore')
 
-def describe_outlayers(dataframe: pd.DataFrame, k=1.5, ordenados = True):
+def describe_outliers(dataframe: pd.DataFrame, k=1.5, ordenados = True):
 
-    diccionario_outlayers = []
+    diccionario_outliers = []
    
     columnas_numericas = dataframe.select_dtypes(np.number).columns
 
@@ -47,17 +47,17 @@ def describe_outlayers(dataframe: pd.DataFrame, k=1.5, ordenados = True):
         condicion_inferior = dataframe[columna] < limite_inferior
         condicion_superior = dataframe[columna] > limite_superior
 
-        df_outlayers = dataframe[condicion_inferior | condicion_superior]
+        df_outliers = dataframe[condicion_inferior | condicion_superior]
         
-        diccionario_outlayers.append({
+        diccionario_outliers.append({
             'columna': columna,
-            'n_outlayers': df_outlayers.shape[0],
+            'n_outliers': df_outliers.shape[0],
             'limite_inf': limite_inferior,
             'limite_sup': limite_superior,
-            '%_outlayers': round((df_outlayers.shape[0] / dataframe.shape[0]) * 100, 2)
+            '%_outliers': round((df_outliers.shape[0] / dataframe.shape[0]) * 100, 2)
         })
 
-    resultado = pd.DataFrame(diccionario_outlayers).sort_values(by='n_outlayers', ascending=False) if ordenados == True else pd.DataFrame(diccionario_outlayers)
+    resultado = pd.DataFrame(diccionario_outliers).sort_values(by='n_outliers', ascending=False) if ordenados == True else pd.DataFrame(diccionario_outliers)
         
     display(resultado)
 
