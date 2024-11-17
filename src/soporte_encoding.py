@@ -39,7 +39,7 @@ class Analisis_Visual_Encoding:
         self.lista_variables_categorias = lista_variables_categorias
         self.variable_respuesta = variable_respuesta
 
-    def crear_boxplot(self, whis=1.5, color="blue", tamano_grafica=(50, 50)):
+    def crear_boxplot(self, whis=1.5, color="blue", tamano_grafica=(20, 10)):
         """
         Crea un boxplot para cada variable categórica en el conjunto de datos.
 
@@ -65,7 +65,7 @@ class Analisis_Visual_Encoding:
 
         fig.tight_layout()
 
-    def crear_barplot(self, paleta="viridis", tamano_grafica=(20, 20)):
+    def crear_barplot(self, paleta="viridis", tamano_grafica=(20, 10)):
         """
         Crea un barplot para cada variable categórica en el conjunto de datos.
 
@@ -90,9 +90,8 @@ class Analisis_Visual_Encoding:
                           errorbar= 'ci')
             
             axes[indice].tick_params(rotation=90)
-            if axes[indice].get_legend() is not None:
-                axes[indice].get_legend().remove()  # eliminamos la leyenda de las gráficas solo si existe
-            
+            axes[indice].get_legend().remove() # eliminamos la leyenda de las gráficas
+
 
         fig.tight_layout()
 
@@ -465,7 +464,7 @@ class Encoding:
             target_encoder = TargetEncoder(smooth="auto")
 
             # transformamos los datos de las columnas almacenadas en la variable col_code y añadimos la variable respuesta para que calcule la media ponderada para cada categória de las variables
-            target_encoder_trans = target_encoder.fit_transform(self.dataframe[col_encode], self.dataframe[[self.variable_respuesta]])
+            target_encoder_trans = target_encoder.fit_transform(self.dataframe[self.variable_respuesta], self.dataframe[[col_encode]])
             
             # creamos un DataFrame con los resultados de la transformación
             target_encoder_df = pd.DataFrame(target_encoder_trans, columns=target_encoder.get_feature_names_out())
