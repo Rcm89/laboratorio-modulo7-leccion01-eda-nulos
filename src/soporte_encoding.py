@@ -344,6 +344,7 @@ class Encoding:
         """
         # accedemos a la clave de 'onehot' para poder extraer las columnas a las que que queramos aplicar OneHot Encoding. En caso de que no exista la clave, esta variable será una lista vacía
         col_encode = self.diccionario_encoding.get("onehot", [])
+        col_encode = list(col_encode.keys())
 
         # si hay contenido en la lista 
         if col_encode:
