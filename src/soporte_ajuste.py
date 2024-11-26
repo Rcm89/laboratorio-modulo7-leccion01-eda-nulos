@@ -152,3 +152,48 @@ class AnalisisModelosRegresion:
         plt.title(f"Importancia de Predictores - {modelo}")
         plt.show()
         return importancia_df
+    
+
+def metricas(y_train, y_train_pred, y_test, y_test_pred):
+    """
+    Calcula métricas de evaluación para modelos de regresión sobre los datos de entrenamiento y prueba.
+
+    Parameters:
+    ----------
+    y_train : pandas.core.frame.DataFrame
+        Valores reales del conjunto de entrenamiento.
+    y_train_pred : pandas.core.frame.DataFrame
+        Valores predichos por el modelo para el conjunto de entrenamiento.
+    y_test : pandas.core.frame.DataFrame
+        Valores reales del conjunto de prueba.
+    y_test_pred : pandas.core.frame.DataFrame
+        Valores predichos por el modelo para el conjunto de prueba.
+
+    Returns:
+    -------
+    pandas.DataFrame
+        DataFrame con las métricas de evaluación calculadas, organizado en dos categorías:
+        - 'train': Métricas para el conjunto de entrenamiento.
+        - 'test': Métricas para el conjunto de prueba.
+    
+    Métricas calculadas:
+        - r2_score: Coeficiente de determinación (R²), mide el ajuste del modelo.
+        - MAE: Error absoluto medio (Mean Absolute Error).
+        - MSE: Error cuadrático medio (Mean Squared Error).
+        - RMSE: Raíz del error cuadrático medio (Root Mean Squared Error).
+    """
+    metricas = {
+        'train': {
+            'r2_score': r2_score(y_train, y_train_pred),
+            'MAE': mean_absolute_error(y_train, y_train_pred),
+            'MSE': mean_squared_error(y_train, y_train_pred),
+            'RMSE': np.sqrt(mean_squared_error(y_train, y_train_pred))
+        },
+        'test': {
+            'r2_score': r2_score(y_test, y_test_pred),
+            'MAE': mean_absolute_error(y_test, y_test_pred),
+            'MSE': mean_squared_error(y_test, y_test_pred),
+            'RMSE': np.sqrt(mean_squared_error(y_test, y_test_pred))
+        }
+    }
+    return pd.DataFrame(metricas).T
